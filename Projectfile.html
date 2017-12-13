@@ -6,10 +6,22 @@
     <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
     
     <style>
-      body {background-color: ghostwhite;}
+      body {
+      	background-color: ghostwhite;
+      }
+
       circle.dimple-series-1 {
         fill: red;
       }
+      .chart rect {
+		  fill: steelblue;
+		}
+
+		.chart text {
+		  fill: black;
+		  font: 10px sans-serif;
+		  text-anchor: end;
+		}
 
       h2 {
         text-align: center;
@@ -18,7 +30,7 @@
 
     <script type="text/javascript">
       function draw(data) {
-      
+
       /*
         D3.js setup code
       */
@@ -36,22 +48,55 @@
                 .attr('class','chart');
 
       /*
+        Dimple.js Chart construction code 
+      */
+
+// This scatterplot does not seem to work...
+          // var myChart = new dimple.chart(svg, data);
+          // var y = myChart.addMeasureAxis("y", "sum_stakes_fixedodds"); 
+          // var x = myChart.addMeasureAxis("x", "bettingdays_fixedodds");
+          // myChart.addSeries(null, dimple.plot.bubble);
+          // myChart.addLegend(200, 10, 360, 20, "right");
+          // myChart.draw();
+
+// Tried again, also does not work...
+
+        var myChart = new dimple.chart(svg, data);
+        myChart.addMeasureAxis("x", "bettingdays_fixedodds");
+        myChart.addMeasureAxis("y", "bettingdays_fixedodds");
+        myChart.addSeries(null, dimple.plot.bubble);
+        myChart.addLegend(200, 10, 360, 20, "right");
+        myChart.draw();
+
+// trying againg with a bar chart...
+
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+      /*
         Dimple.js Chart construction code
       */
 
           var myChart = new dimple.chart(svg, data);
-          var x = myChart.addMeasureAxis("x", "sum_stakes_fixedodds"); 
-          myChart.addMeasureAxis("y", "bettingdays_fixedodds");
-          // x.dateParseFormat = "%Y";
-          // x.tickFormat = "%Y";
-          // x.timeInterval = 4;
-          myChart.addSeries(null, dimple.plot.scatter);
+          var x = myChart.addCategoryAxis("x", "RG_case"); 
+          var y = myChart.addMeasureAxis("y", "bettingdays_fixedodds");
+          myChart.addSeries("RG_case", dimple.plot.bar);
           myChart.draw();
-        };
 
+// add: dimple.chart.addLogAxis(position, measure, logBase)
+
+
+          debugger;
+        };
     </script>
   </head>
 <body>
+
   <script type="text/javascript">
   /*
     Use D3 (not dimple.js) to load the TSV file
