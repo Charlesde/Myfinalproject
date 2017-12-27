@@ -2,31 +2,51 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
-    
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+    <body>
     <style>
+
       body {
       	background-color: ghostwhite;
       }
+    <div class = "container">
+      <div class="scatterplot">
+        <div class = "dots">
+          <div id = "chart01">
 
-      circle.dimple-series-1 {
-        fill: red;
-      }
       .chart rect {
-		  fill: steelblue;
-		}
+      fill: steelblue;
+    }
 
-		.chart text {
-		  fill: black;
-		  font: 10px sans-serif;
-		  text-anchor: end;
-		}
+    .chart text {
+      fill: black;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
 
       h2 {
         text-align: center
       }
 
+      circle.dimple-series-1 {
+        fill: red;
+      }
+          </div>
+        </div>
+      </div>
+
+      <div class="barrplot">
+        <div class = "bars">
+          <div class="chart02">
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
     </style>
 
     <script type="text/javascript">
@@ -41,12 +61,12 @@
               width = 1400 - margin,
               height = 600 - margin;
 
-          d3.select('body')
+          d3.select('chart01')
           .append('h2')
           .text("Time versus money spend gambling on fixed odds games")
 
 
-          var svg = d3.select("body")
+          var svg = d3.select("chart01")
             .append("svg")
               .attr("width", width + margin)
               .attr("height", height + margin)
@@ -83,17 +103,6 @@
 //       myChart.addSeries(null, dimple.plot.bubble);
 //       myChart.draw();
 
-          // var myChart = new dimple.chart(svg, data);
-          // var x = myChart.addMeasureAxis("x", "sum_stakes_fixedodds");
-          // var y = myChart.addMeasureAxis("y", "bettingdays_fixedodds");
-          // // myChart.addMeasureAxis("z", "bettingdays_fixedodds");
-          // // myChart.addSeries("UserID", dimple.plot.scatter);
-          // myChart.addSeries(["CountryName"], dimple.plot.bubble);
-          // // myChart.addSeries("UserID", dimple.plot.line);
-          // myChart.addLegend(200, 10, 360, 20, "right");
-          // var draw_chart = myChart.draw();
-
-
           var myChart = new dimple.chart(svg, data);
           myChart.setBounds(60, 30, 1100, 330);
           myChart.addMeasureAxis("x", "bets_per_day_fixedodds");
@@ -105,10 +114,19 @@
           myChart.addLegend(200, 10, 360, 20, "right");
           myChart.draw();
 
+          // var myChart = new dimple.chart(svg, data);
+          // var x = myChart.addMeasureAxis("x", "sum_stakes_fixedodds");
+          // var y = myChart.addMeasureAxis("y", "bettingdays_fixedodds");
+          // // myChart.addMeasureAxis("z", "bettingdays_fixedodds");
+          // myChart.addSeries("UserID", dimple.plot.scatter);
+          // myChart.addSeries("UserID", dimple.plot.line);
+          // myChart.addLegend(200, 10, 360, 20, "right");
+          // var draw_chart = myChart.draw();
+
 // trying againg with a bar chart...
 
 
-          var svg2 = d3.select("body")
+          var svg2 = d3.select("chart02")
             .append("svg")
               .attr("width", width + margin)
               .attr("height", height + margin)
@@ -134,14 +152,13 @@
         };
     </script>
   </head>
-<body>
 
   <script type="text/javascript">
   /*
     Use D3 (not dimple.js) to load the TSV file
     and pass the contents of it to the draw function
     */
-  d3.tsv("Dataset2.tsv", draw);
+  d3.tsv("Dataset3.tsv", draw);
   </script>
 </body>
 </html>
