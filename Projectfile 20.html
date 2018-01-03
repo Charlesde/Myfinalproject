@@ -23,6 +23,8 @@
     <body>
 
 <!--1. Letszoom does not work -->
+    <b>The graph is loading...</b>
+
     <p>
     <button onclick="Letszoom()">Zoom in/out
     </button>
@@ -88,7 +90,7 @@
                 // This indicates whether the item is already visible or not
                 
 
-                // 2. Can't seem to remove this text no matter what I try?
+                // 2a. I can't seem to remove the text in the graph no matter what I try?
                 // d3.select('.textdiv.text').html(null);
                 // var textselect2 = d3.selectAll(".textselect")
                 // textselect2.transition()
@@ -140,13 +142,14 @@
 
 // The text
             svg.selectAll("textdiv")
-              .data(["All these", "extreme cases", "are RG gamblers"])
+              .data(["Note that all the", "extreme cases on this side", "are RG gamblers"])
               .enter()
               .append("text")
-                .attr("x", function (d, i) { return 432 + i * 300; })
+                .attr("x", function (d, i) { return 232 + i * 160; })
                 .attr("y", function (d, i) { return 260 + i * 200; })
                 .style("font-family", "sans-serif")
                 .style("font-size", "30px")
+            // 2b. I can't turn the color of this to blue... something wrong in the selection?
                 .style("color", "blue")
                 .text(function (d) { return d; });
 
@@ -209,17 +212,17 @@
     </div> -->
 
   <script type="text/javascript">
-    d3.tsv("Dataset4.tsv", function(d) {
+    d3.tsv("Dataset2.tsv", function(d) {
           // transform data
           d['bets_per_day_fixedodds'] = +d['bets_per_day_fixedodds'];
           d['euros_per_bet_fixedodds'] = +d['euros_per_bet_fixedodds'];
           d['sum_stakes_fixedodds'] = +d['sum_stakes_fixedodds'];
           d['bettingdays_fixedodds'] = +d['bettingdays_fixedodds'];
           // 3. I would like to change all 0's in the RG_Case column into non-RG gamer and all 1's into RG gamer
-          if d['RG_case'] == '0':
-            d['RG_case'] = 'regular gambler'
-          if d['RG_case'] == '1':
-            d['RG_case'] = 'Gambler in RG (Responsible Gambling) group'
+          // if d['RG_case'] == '0':
+          //   d['RG_case'] = 'regular gambler'
+          // if d['RG_case'] == '1':
+          //   d['RG_case'] = 'Gambler in RG (Responsible Gambling) group'
 
           return d;
     }, drawme);
