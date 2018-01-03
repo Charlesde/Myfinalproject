@@ -1,0 +1,234 @@
+<!-- idea is to make a scatterplot which lets you choose between different RGcase vs non-RGcase Maybe with scatterplot -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+    <style>
+      body {
+        background-color: ghostwhite;
+      }
+
+      .textdiv {
+        color: blue
+      }
+
+      h2 {
+        text-align: center;
+      }
+
+    </style>
+    <body>
+
+<!--1. Letszoom does not work -->
+    <p>
+    <button onclick="Letszoom()">Zoom in/out
+    </button>
+    </p> 
+
+    <script type="text/javascript">
+        function Letszoom() {
+              console.log(data)
+              data = dimple.filterData(data, "sum_stakes_fixedodds", "30000");
+              drawme(data) 
+            }
+
+        function drawme(data){
+            console.log(data)
+            "use strict";
+
+            var margin = 75,
+                width = 1400 - margin,
+                height = 1600 - margin;
+
+            var svg = d3.select("#chart-01")
+                .append("svg")
+                .attr("width", "100%")
+                .attr("height", "1100px");
+
+            // var svg2 = d3.select("#chart-02")
+            //     .append("svg")
+            //     .attr("width", "100%")
+            //     .attr("height", "400px");
+
+
+            var myChart =  new dimple.chart(svg, data);
+            myChart.setBounds(60, 60, 1500, 1000);
+            var x = myChart.addMeasureAxis("x", "sum_stakes_fixedodds");
+            x.title = "The sum of all stakes from all games played";
+            var y = myChart.addMeasureAxis("y", "bettingdays_fixedodds");
+            y.title = "The sum of all active days";
+            // var z = myChart.addMeasureAxis("z", "net_loss_fixedodds");
+            myChart.addSeries(["sum_stakes_fixedodds", "bettingdays_fixedodds", "RG_case"], dimple.plot.bubble);
+            var myLegend = myChart.addLegend(1550, 100, 60, 300, "Right");
+            myChart.draw();
+
+            myChart.legends = [];
+
+            // This block adds the legend title. 
+            svg.selectAll("title_text")
+              .data(["Click legend to", "unselect the type", "of gambler"])
+              .enter()
+              .append("text")
+                .attr("x", 1565)
+                .attr("y", function (d, i) { return 60 + i * 14; })
+                .style("font-family", "sans-serif")
+                .style("font-size", "12px")
+                .style("color", "Black")
+                .text(function (d) { return d; });
+
+            // Get a unique list of RG values to use when filtering
+            var filterValues = dimple.getUniqueValues(data, "RG_case");
+            // Get all the rectangles from our now orphaned legend
+            myLegend.shapes.selectAll("rect")
+              // Add a click event to each rectangle
+              .on("click", function (e) {
+                // This indicates whether the item is already visible or not
+                
+
+                // 2. Can't seem to remove this text no matter what I try?
+                // d3.select('.textdiv.text').html(null);
+                // var textselect2 = d3.selectAll(".textselect")
+                // textselect2.transition()
+                    // .attr("color", "white")
+                theline.transition()
+                    .ease(d3.easeLinear)
+                    .duration(500)
+                    .attr("x1", x._scale(0))
+                    .attr("x2", x._scale(0))
+                    .attr("y1", 0)
+                    .attr("y2", 0)
+                // var textselect = []
+                var hide = false;
+                var newFilters = [];
+                // If the filters contain the clicked shape hide it
+                filterValues.forEach(function (f) {
+                  if (f === e.aggField.slice(-1)[0]) {
+                    hide = true;
+                  } else {
+                    newFilters.push(f);
+                  }
+                });
+                // Hide the shape or show it
+                if (hide) {
+                  d3.select(this).style("opacity", 0.1);
+                } else {
+                  newFilters.push(e.aggField.slice(-1)[0]);
+                  d3.select(this).style("opacity", 0.9);
+                }
+                // Update the filters
+                filterValues = newFilters;
+                // Filter the data
+                myChart.data = dimple.filterData(data, "RG_case", filterValues);
+                // Passing a duration parameter makes the chart animate. Without
+                // it there is no transition
+                myChart.draw(800);
+              });
+              // debugger;
+
+// add title
+            svg.append("text")
+               .attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+               .attr("y", myChart._yPixels() - 20)
+               .style("text-anchor", "middle")
+               .style("font-size", "30px")
+               .style("font-family", "sans-serif")
+               .style("font-weight", "bold")
+               .text("Gamblers total Fixed Odds betting activity (time and stakes) on BWin Party from 2008");
+
+// The text
+            svg.selectAll("textdiv")
+              .data(["All these", "extreme cases", "are RG gamblers"])
+              .enter()
+              .append("text")
+                .attr("x", function (d, i) { return 432 + i * 300; })
+                .attr("y", function (d, i) { return 260 + i * 200; })
+                .style("font-family", "sans-serif")
+                .style("font-size", "30px")
+                .style("color", "blue")
+                .text(function (d) { return d; });
+
+// The visual line
+            var theline = svg.append("line")
+              .attr("x1", x._scale(0))
+              .attr("x2", x._scale(0))
+              .attr("y1", myChart._yPixels())
+              .attr("y2", myChart._yPixels() + myChart._heightPixels())
+              .style("stroke", "black")
+              .style("stroke-dasharray", "3");
+
+            update();
+
+            function update() {
+
+            theline.transition()
+                    .ease(d3.easeLinear)
+                    .duration(1000)
+                    .attr("x1", x._scale(0))
+                    .attr("x2", x._scale(360000))
+
+          }
+
+            var body = d3.select("body");
+            var div2 = body.append("div2");
+            div2.html("We can see that the most extreme gamblers in terms of time and or stakes (here visually separated by the dotted line) are RG gamblers.");
+
+        }
+    </script>
+
+    <title>Project</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+    <!-- Demo Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="chart-01">
+                  <div class="textdiv">
+                    
+                  </div>  
+                </div>
+            </div>
+        </div>
+<!--         <div class="row">
+            <div class="col-sm-12">
+                <div id="chart-02">
+
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+  <script type="text/javascript">
+    d3.tsv("Dataset4.tsv", function(d) {
+          // transform data
+          d['bets_per_day_fixedodds'] = +d['bets_per_day_fixedodds'];
+          d['euros_per_bet_fixedodds'] = +d['euros_per_bet_fixedodds'];
+          d['sum_stakes_fixedodds'] = +d['sum_stakes_fixedodds'];
+          d['bettingdays_fixedodds'] = +d['bettingdays_fixedodds'];
+          // 3. I would like to change all 0's in the RG_Case column into non-RG gamer and all 1's into RG gamer
+          if d['RG_case'] == '0':
+            d['RG_case'] = 'regular gambler'
+          if d['RG_case'] == '1':
+            d['RG_case'] = 'Gambler in RG (Responsible Gambling) group'
+
+          return d;
+    }, drawme);
+
+
+  </script>
+
+
+
+
+</body>
+</html>
