@@ -6,7 +6,7 @@ These datasets are based on electronic records of the entire bwin.party betting 
 
 Design - explain any design choices you made including changes to the visualization after collecting feedback
 
-I wanted to make a scatterplot because I wanted to compare two variables while also accounting for the RG case and non RG case. and it is interesting to see the volume of
+I wanted to make a scatterplot because I wanted to compare two variables while also accounting for the RG case and non RG case. and it is interesting to see the volume of the total bets/losses which could be the size of the bubbles. As it turns out, the size just makes it confusing and we need a zoom function to see the relation between the x and y axis. Also, changes were made in the variables (stakes instead of bets) and in the explanations.
 
 Feedback - include all feedback you received from others on your visualization from the first sketch to the final visualization
 
@@ -31,3 +31,7 @@ Resp 3:
 Resources - list any sources you consulted to create your visualization
 
 This data can be downloaded from http://www.thetransparencyproject.org/download_index.php. 
+https://stackoverflow.com/questions/25416063/title-for-charts-and-axes-in-dimple-js-charts
+http://dimplejs.org/advanced_examples_viewer.html?id=advanced_interactive_legends
+http://ggplot2.tidyverse.org/reference/labs.html
+https://github.com/d3/d3-transition
