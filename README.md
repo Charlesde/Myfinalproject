@@ -6,9 +6,28 @@ These datasets are based on electronic records of the entire bwin.party betting 
 
 Design - explain any design choices you made including changes to the visualization after collecting feedback
 
-
+I wanted to make a scatterplot because I wanted to compare two variables while also accounting for the RG case and non RG case. and it is interesting to see the volume of
 
 Feedback - include all feedback you received from others on your visualization from the first sketch to the final visualization
+
+Resp 1:
+- Would be cool if you could zoom in
+- Refrain from making RG red and other green, no moral judgement.
+- Make a zoom function so that we can see the relation better.
+- Add a better graph title
+
+Resp 2:
+- rename labels so that it is not 1 and zero anymore
+- Maybe a nice background color
+
+Resp 3:
+- Remove the ouliers (zoom in)
+- add text in graph to explain your line better.
+- Add explanatory text below graph
+- remove the z dimension (bubble size), it is confusing and too much information
+
+
+
 Resources - list any sources you consulted to create your visualization
 
 This data can be downloaded from http://www.thetransparencyproject.org/download_index.php. 
